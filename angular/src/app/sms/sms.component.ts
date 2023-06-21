@@ -16,9 +16,17 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class SmsComponent implements OnInit, AfterViewInit {
   resultsLength: number = 0;
   constructor(private smsService: SMSService) { }
-
-  public displayedColumns: string[] = ['index', 'from', 'content', 'receivedTime', 'phoneNumber'];
+  public displayedColumns: string[] = ['index', 'from', 'content', 'receivedTime', 'phoneNumber', 'button'];
   smsData: SMS[] = [];
+  smsView: SMS = {
+    id: '',
+    index: '',
+    from: '',
+    content: '',
+    receivedTime: '',
+    phoneID: '',
+    phoneNumber: ''
+  };
   formFilter = new FormGroup({
     from: new FormControl(),
     content: new FormControl(),
@@ -66,5 +74,9 @@ export class SmsComponent implements OnInit, AfterViewInit {
       phoneNumber: this.formFilter.value.phoneNumber,
     }
     return this.smsService.getSMS(smsRequest)
+  }
+  clickView(sms: SMS){
+    console.log(sms);
+    this.smsView = sms;
   }
 }

@@ -5,5 +5,5 @@ export interface SMS {
     content: string;
     receivedTime: string;
     phoneID: string;
-    phoneName: string;
+    phoneNumber: string;
   }

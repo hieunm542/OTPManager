@@ -16,6 +16,7 @@ namespace JwtAuthDemo.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+            
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

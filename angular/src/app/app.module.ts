@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { DemoApisComponent } from './demo-apis/demo-apis.component';
 import { TokenComponent } from './token/token.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -26,7 +25,6 @@ import { CommonModule } from '@angular/common';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    DemoApisComponent,
     TokenComponent,
     PhoneComponent,
     SmsComponent,

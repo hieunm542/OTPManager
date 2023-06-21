@@ -9,19 +9,19 @@
       <div class="col-lg-3">
         <mat-form-field class="full-width">
           <mat-label>From</mat-label>
-          <input matInput placeholder="Viettel" formControlName="from" value="">
+          <input matInput placeholder="Microsoft" formControlName="from" value="">
         </mat-form-field>
       </div>
       <div class="col-lg-3">
         <mat-form-field class="full-width">
           <mat-label>Phone Number</mat-label>
-          <input matInput placeholder="Viettel" formControlName="phoneNumber" value="">
+          <input matInput placeholder="098754321" formControlName="phoneNumber" value="">
         </mat-form-field>
       </div>
       <div class="col-lg-3">
         <mat-form-field class="full-width">
           <mat-label>Content</mat-label>
-          <input matInput placeholder="Viettel" formControlName="content" value="">
+          <input matInput placeholder="Content" formControlName="content" value="">
         </mat-form-field>
       </div>
       <div class="col-lg-3">
@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<div class="card mt-3">
+<div class="card mt-4">
   <h3 class="card-header d-flex justify-content-between align-items-center">
     SMS
   </h3>
@@ -77,6 +77,12 @@
             <th mat-header-cell *matHeaderCellDef>Phone Number</th>
             <td mat-cell *matCellDef="let sms">{{ sms.phoneNumber }}</td>
           </ng-container>
+          <ng-container matColumnDef="button">
+            <!-- Column definition -->
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let sms"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#smsView" (click)="clickView(sms)">View</button></td>
+          </ng-container>
           <!-- Repeat for other columns (content, receivedTime) -->
 
           <!-- Table rows -->
@@ -88,5 +94,39 @@
       <mat-paginator [length]="resultsLength" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </div>
 
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="smsView" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SMS View</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+          <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="smsView.phoneNumber" readonly="true">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">From</label>
+          <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="smsView.from" readonly="true">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Content</label>
+          <textarea class="form-control" name="" id="" cols="30" rows="10" [(ngModel)]="smsView.content" readonly="true"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Received Time</label>
+          <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="smsView.receivedTime" readonly="true">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>

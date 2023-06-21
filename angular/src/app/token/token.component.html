@@ -1,97 +1,118 @@
-<!-- <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Token</th>
-        <th scope="col">Number Date Expired</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of tokenData, ;let i = index ">
-    
-        <th >{{i+1}}</th>
-        <td>{{ item.name }}</td>
-        <td class="limit">{{item.tokenString}}</td>
-        <td>{{item.numberDateExpired}}</td>
-        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tokenView" (click)="clickView(item.tokenString)">View</button></td>
-      </tr>
-    </tbody>
-  </table> -->
-  
-  <div class="card">
-    <h3 class="card-header d-flex justify-content-between align-items-center">
-      Token
-      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tokenAdd">Add Token</button>
-    </h3>
-    <div class="card-body">
-      <div class="">
-        <div class="table-container">
-          <table mat-table [dataSource]="tokenData">
-            <ng-container matColumnDef="index">
-              <th mat-header-cell *matHeaderCellDef>No.</th>
-              <td mat-cell *matCellDef="let token;let i = index;">{{i+1}}</td>
-            </ng-container>
-            <!-- Table columns -->
-            <ng-container matColumnDef="name">
-              <!-- Column definition -->
-              <th mat-header-cell *matHeaderCellDef>Name</th>
-              <td mat-cell *matCellDef="let token">{{ token.name }}</td>
-            </ng-container>
-            <ng-container matColumnDef="tokenString">
-              <!-- Column definition -->
-              <th mat-header-cell *matHeaderCellDef>Token String</th>
-              <td class="limit" mat-cell *matCellDef="let token">{{ token.tokenString }}</td>
-            </ng-container>
-            <ng-container matColumnDef="numberDateExpired">
-              <!-- Column definition -->
-              <th mat-header-cell *matHeaderCellDef>Number Date Expired</th>
-              <td mat-cell *matCellDef="let token">{{ token.numberDateExpired }}</td>
-            </ng-container>
-            <ng-container matColumnDef="button">
-              <!-- Column definition -->
-              <th mat-header-cell *matHeaderCellDef>Action</th>
-              <td mat-cell *matCellDef="let token"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tokenView" (click)="clickView(token.tokenString)">View</button></td>
-            </ng-container>
-            <!-- Repeat for other columns (content, receivedTime) -->
-          
-            <!-- Table rows -->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        
-          </table>
-        </div>
-        <mat-paginator [length]="resultsLength" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+<div class="card">
+  <h3 class="card-header d-flex justify-content-between align-items-center">
+    Filter
+  </h3>
+  <div class="card-body">
+    <form class="row">
+      <div class="col-lg-3">
+        <mat-form-field class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Viettel" value="">
+        </mat-form-field>
       </div>
+      <div class="col-lg-3">
+        <mat-form-field class="full-width">
+          <mat-label>Number Date Expired</mat-label>
+          <input matInput placeholder="Viettel"  value="">
+        </mat-form-field>
+      </div>
+      <div class="col-lg-3">
+        <mat-form-field class="full-width">
+          <mat-label>Created At</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="From date">
+            <input matEndDate placeholder="To date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-lg-3"><button type="button" name="" id="" class="btn btn-primary">Filter</button></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="card mt-4">
+  <h3 class="card-header d-flex justify-content-between align-items-center">
+    Token
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tokenAdd">Add Token</button>
+  </h3>
+  <div class="card-body">
+    <div class="">
+      <div class="table-container">
+        <table mat-table [dataSource]="tokenData">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>No.</th>
+            <td mat-cell *matCellDef="let token;let i = index;">{{i+1}}</td>
+          </ng-container>
+          <!-- Table columns -->
+          <ng-container matColumnDef="name">
+            <!-- Column definition -->
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let token">{{ token.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="tokenString">
+            <!-- Column definition -->
+            <th mat-header-cell *matHeaderCellDef>Token String</th>
+            <td class="limit" mat-cell *matCellDef="let token">{{ token.tokenString }}</td>
+          </ng-container>
+          <ng-container matColumnDef="numberDateExpired">
+            <!-- Column definition -->
+            <th mat-header-cell *matHeaderCellDef>Number Date Expired</th>
+            <td mat-cell *matCellDef="let token">{{ token.numberDateExpired }}</td>
+          </ng-container>
+          <ng-container matColumnDef="createdAt">
+            <!-- Column definition -->
+            <th mat-header-cell *matHeaderCellDef>Created At</th>
+            <td mat-cell *matCellDef="let token">{{ token.createdAt }}</td>
+          </ng-container>
+          <ng-container matColumnDef="button">
+            <!-- Column definition -->
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let token"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#tokenView" (click)="clickView(token.tokenString)">View</button></td>
+          </ng-container>
+          <!-- Repeat for other columns (content, receivedTime) -->
+
+          <!-- Table rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+      </div>
+      <mat-paginator [length]="resultsLength" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
+</div>
 
 
 
 
 
 
-  <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="tokenView" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Token View</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <code>{{currentToken}}</code>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-success" (click)="copyToken()">Copy</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Token View</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <code>{{currentToken}}</code>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="copyToken()">Copy</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
-    <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="tokenAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -110,7 +131,7 @@
         </div>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="addToken()">Add</button>
+        <button type="button" class="btn btn-primary" (click)="addToken()">Add</button>
         <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
       </div>
     </div>

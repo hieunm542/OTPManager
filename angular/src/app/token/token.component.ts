@@ -19,7 +19,7 @@ export class TokenComponent implements OnInit {
   public numDateExpired: number = 30;
   constructor(private tokenService: TokenService, private toastr: ToastrService) { }
   resultsLength: number = 0;
-  public displayedColumns: string[] = ['index', 'name', 'tokenString', 'numberDateExpired', 'button'];
+  public displayedColumns: string[] = ['index', 'name', 'tokenString', 'numberDateExpired','createdAt', 'button'];
   ngOnInit(): void {
 
   }

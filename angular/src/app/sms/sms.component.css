@@ -8,12 +8,4 @@ table {
 td{
   padding-left: 10px;
 }
-.limit {
-  max-width: 100px; /* Adjust the max-width to fit your requirements */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.full-width{
-  width: 100%;
-}
+
