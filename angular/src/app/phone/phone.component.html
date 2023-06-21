@@ -68,7 +68,7 @@
             <td mat-cell *matCellDef="let phone">
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneUpdate"
                 (click)="viewUpdatePhone(phone.id)">Update</button>
-              <button type="button" class="btn btn-danger" (click)="deletePhone(phone.id)">Delete</button>
+              <button type="button" class="btn btn-danger m-2" (click)="deletePhone(phone.id)">Delete</button>
             </td>
           </ng-container>
           <!-- Repeat for other columns (content, receivedTime) -->
