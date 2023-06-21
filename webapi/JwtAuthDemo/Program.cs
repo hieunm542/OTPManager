@@ -2,6 +2,7 @@ using System;
 using System.Security.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace JwtAuthDemo
@@ -17,6 +18,7 @@ namespace JwtAuthDemo
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+
                     webBuilder.ConfigureKestrel(serverOptions =>
                     {
                         serverOptions.Limits.MinRequestBodyDataRate = new MinDataRate(100, TimeSpan.FromSeconds(10));

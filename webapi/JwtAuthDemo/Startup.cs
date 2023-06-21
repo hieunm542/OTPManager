@@ -1,20 +1,26 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using JwtAuthDemo.Infrastructure;
 using JwtAuthDemo.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
 
 namespace JwtAuthDemo
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -83,6 +89,13 @@ namespace JwtAuthDemo
                 options.AddPolicy("AllowAll",
                     builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
             });
+            services.AddDbContext<DBContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+            services.AddScoped<CronJobService>();
+            ConfigureLogging(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,6 +125,45 @@ namespace JwtAuthDemo
             {
                 endpoints.MapControllers();
             });
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+                Task.Run(async () =>
+                {
+                    using (var scope = scopeFactory.CreateScope())
+                    {
+                        var cronJobService = scope.ServiceProvider.GetService<CronJobService>();
+                        await cronJobService.ExecuteAsync();
+                    }
+                });
+
+                //var serviceProvider = serviceScope.ServiceProvider;
+                //var cronJobService = serviceProvider.GetService<CronJobService>();
+                //Task.Run(() =>
+                //{
+                //    cronJobService.Execute();
+                //});
+
+            }
+
+        }
+
+        public void ConfigureLogging(IServiceCollection services)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.File("Logs/app.log", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            services.AddLogging(builder =>
+            {
+                builder.ClearProviders();
+                builder.AddSerilog();
+            });
+
+            // Other configurations
         }
     }
 }

@@ -14,6 +14,7 @@ namespace JwtAuthDemo.Infrastructure
     public interface IJwtAuthManager
     {
         IImmutableDictionary<string, RefreshToken> UsersRefreshTokensReadOnlyDictionary { get; }
+        JwtAuthResult GenerateTokensCustom(string username, Claim[] claims, DateTime now, int numDateExpired);
         JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now);
         JwtAuthResult Refresh(string refreshToken, string accessToken, DateTime now);
         void RemoveExpiredRefreshTokens(DateTime now);
@@ -53,6 +54,31 @@ namespace JwtAuthDemo.Infrastructure
             {
                 _usersRefreshTokens.TryRemove(refreshToken.Key, out _);
             }
+        }
+        public JwtAuthResult GenerateTokensCustom(string username, Claim[] claims, DateTime now, int numDateExpired)
+        {
+            var shouldAddAudienceClaim = string.IsNullOrWhiteSpace(claims?.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Aud)?.Value);
+            var jwtToken = new JwtSecurityToken(
+                _jwtTokenConfig.Issuer,
+                shouldAddAudienceClaim ? _jwtTokenConfig.Audience : string.Empty,
+                claims,
+                expires: now.AddDays(numDateExpired),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(_secret), SecurityAlgorithms.HmacSha256Signature));
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+
+            var refreshToken = new RefreshToken
+            {
+                UserName = username,
+                TokenString = GenerateRefreshTokenString(),
+                ExpireAt = now.AddMinutes(_jwtTokenConfig.RefreshTokenExpiration)
+            };
+            _usersRefreshTokens.AddOrUpdate(refreshToken.TokenString, refreshToken, (_, _) => refreshToken);
+
+            return new JwtAuthResult
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
         }
 
         public JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now)

@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using JwtAuthDemo.Infrastructure;
+using Newtonsoft.Json.Linq;
+using JwtAuthDemo.Models;
 
 namespace JwtAuthDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ValuesController : ControllerBase
     {
         private readonly ILogger<ValuesController> _logger;

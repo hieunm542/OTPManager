@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using JwtAuthDemo.Infrastructure;
+using JwtAuthDemo.Models;
 using JwtAuthDemo.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -21,12 +22,13 @@ namespace JwtAuthDemo.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
         private readonly IJwtAuthManager _jwtAuthManager;
-
-        public AccountController(ILogger<AccountController> logger, IUserService userService, IJwtAuthManager jwtAuthManager)
+        private DBContext _dbContext;
+        public AccountController(ILogger<AccountController> logger, IUserService userService, IJwtAuthManager jwtAuthManager, DBContext dBContext)
         {
             _logger = logger;
             _userService = userService;
             _jwtAuthManager = jwtAuthManager;
+            _dbContext = dBContext;
         }
 
         [AllowAnonymous]
@@ -85,6 +87,9 @@ namespace JwtAuthDemo.Controllers
             _logger.LogInformation($"User [{userName}] logged out the system.");
             return Ok();
         }
+
+
+
 
         [HttpPost("refresh-token")]
         [Authorize]

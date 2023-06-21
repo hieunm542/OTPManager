@@ -1,66 +1,63 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using JwtAuthDemo.Infrastructure;
+using JwtAuthDemo.Models;
 using Microsoft.Extensions.Logging;
 
 namespace JwtAuthDemo.Services
 {
     public interface IUserService
     {
-        bool IsAnExistingUser(string userName);
         bool IsValidUserCredentials(string userName, string password);
         string GetUserRole(string userName);
+        Guid GetUserID(string userName);
     }
 
     public class UserService : IUserService
     {
         private readonly ILogger<UserService> _logger;
-
-
-        private readonly IDictionary<string, string> _users = new Dictionary<string, string>
-        {
-            { "test1", "password1" },
-            { "test2", "password2" },
-            { "admin", "securePassword" }
-        };
+        private DBContext _dbContext;
         // inject your database here for user validation
-        public UserService(ILogger<UserService> logger)
+        public UserService(ILogger<UserService> logger, DBContext dBContext)
         {
             _logger = logger;
+            _dbContext = dBContext;
         }
 
         public bool IsValidUserCredentials(string userName, string password)
         {
-            _logger.LogInformation($"Validating user [{userName}]");
-            if (string.IsNullOrWhiteSpace(userName))
-            {
+            User user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
+            if (user == null)
                 return false;
+            else
+            {
+                if (user.Password != password)
+                    return false;
             }
 
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                return false;
-            }
-
-            return _users.TryGetValue(userName, out var p) && p == password;
+            return true;
         }
-
-        public bool IsAnExistingUser(string userName)
+        public Guid GetUserID(string userName)
         {
-            return _users.ContainsKey(userName);
+            User user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
+            if (user == null)
+            {
+                return Guid.Empty;
+            }
+            return user.ID;
         }
-
         public string GetUserRole(string userName)
         {
-            if (!IsAnExistingUser(userName))
+            User user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
+            if (user == null)
             {
                 return string.Empty;
             }
-
-            if (userName == "admin")
-            {
+            if (user.Role == "admin")
                 return UserRoles.Admin;
-            }
-
-            return UserRoles.BasicUser;
+            else
+                return UserRoles.BasicUser;
         }
     }
 

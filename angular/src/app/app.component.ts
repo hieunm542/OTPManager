@@ -5,8 +5,9 @@ import { AuthService } from './core';
   selector: 'app-root',
   template: `
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" routerLink="">JWT Auth Demo</a>
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light px-3" style="background-color: #e3f2fd;">
+        <a class="navbar-brand" routerLink="">OTP Manager</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -22,10 +23,13 @@ import { AuthService } from './core';
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto">
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="demo-apis">Demo APIs</a>
+              <a class="nav-link" routerLink="tokens">Tokens</a>
             </li>
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="management">Management Area</a>
+              <a class="nav-link" routerLink="phones">Phones</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="sms">SMS</a>
             </li>
           </ul>
           <div class="form-inline">
@@ -40,17 +44,18 @@ import { AuthService } from './core';
           </div>
         </div>
       </nav>
+      
     </header>
-    <main class="d-flex flex-column flex-grow-1 h-100 w-100">
+    <main class="container d-flex flex-column flex-grow-1 h-100 w-100 mt-5">
       <router-outlet></router-outlet>
     </main>
   `,
   styles: [],
 })
 export class AppComponent {
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   logout() {
     this.authService.logout();
