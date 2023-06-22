@@ -63,7 +63,7 @@ namespace JwtAuthDemo.Controllers
         [HttpPost("getSMS")]
         public SMSResponse getSMS(SMSRequest smsRequest)
         {
-            var smsList = _dbContext.SMSs.ToArray();
+            var smsList = _dbContext.SMSs.OrderByDescending(p=>p.ReceivedTime).ToArray();
             if (smsRequest.index.HasValue)
             {
                 smsList = smsList.Where(sms => sms.Index == smsRequest.index).ToArray();
@@ -108,6 +108,7 @@ namespace JwtAuthDemo.Controllers
             {
                 joinResult = joinResult.Where(sms => sms.PhoneNumber == smsRequest.phoneNumber).ToArray();
             }
+            joinResult = joinResult.Skip(smsRequest.pageIndex * smsRequest.pageSize).Take(smsRequest.pageSize);
             SMSResponse smsResponse = new SMSResponse()
             {
                 total = joinResult.Count(),
