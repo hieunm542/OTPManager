@@ -13,13 +13,14 @@ import * as $ from 'jquery';
 })
 export class TokenComponent implements OnInit {
   @ViewChild('tokenAdd')
+  public isDeactive: boolean = false;
   public tokenData: Token[] = [];
   public currentToken: string = "";
   public _name: string = "";
   public numDateExpired: number = 30;
   constructor(private tokenService: TokenService, private toastr: ToastrService) { }
   resultsLength: number = 0;
-  public displayedColumns: string[] = ['index', 'name', 'tokenString', 'numberDateExpired','createdAt', 'button'];
+  public displayedColumns: string[] = ['index', 'name', 'tokenString', 'numberDateExpired','createdAt','status', 'button'];
   ngOnInit(): void {
 
   }
@@ -68,6 +69,12 @@ export class TokenComponent implements OnInit {
     (error)=>{
       this.toastr.error(error);
       this.renderTable();
+    });
+  }
+  clickDeactive(id: string){
+    console.log(id);
+    this.tokenService.deactiveToken(id).subscribe(()=>{
+      this.toastr.success("Deactive Success!");
     });
   }
 

@@ -13,7 +13,7 @@
       <div class="col-lg-3">
         <mat-form-field class="full-width">
           <mat-label>Number Date Expired</mat-label>
-          <input matInput placeholder="Viettel"  value="">
+          <input matInput placeholder="Viettel" value="">
         </mat-form-field>
       </div>
       <div class="col-lg-3">
@@ -69,11 +69,24 @@
             <th mat-header-cell *matHeaderCellDef>Created At</th>
             <td mat-cell *matCellDef="let token">{{ token.createdAt }}</td>
           </ng-container>
+          <ng-container matColumnDef="status">
+            <!-- Column definition -->
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let token">
+              <span class="badge bg-success" *ngIf="token.isActive">Active</span>
+              <span class="badge bg-danger" *ngIf="!token.isActive">Deactive</span>
+            </td>
+          </ng-container>
           <ng-container matColumnDef="button">
             <!-- Column definition -->
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let token"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#tokenView" (click)="clickView(token.tokenString)">View</button></td>
+                data-bs-target="#tokenView" (click)="clickView(token.tokenString)">View</button>
+                <button type="button" class="btn btn-danger m-3" (click)="clickDeactive(token.id)"  *ngIf="token.isActive"
+                >Deactive</button>
+           
+
+            </td>
           </ng-container>
           <!-- Repeat for other columns (content, receivedTime) -->
 

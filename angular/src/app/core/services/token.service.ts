@@ -24,4 +24,7 @@ export class TokenService {
   addTokens(_name: string, numDateExpired: number){
     return this.http.post(`${this.apiUrl}/addToken?name=${_name}&numDateExpired=${numDateExpired}`, {}, {responseType: 'arraybuffer'})
   }
+  deactiveToken(id: string){
+    return this.http.put(`${this.apiUrl}/deactiveToken?id=${id}`, {})
+  }
 }

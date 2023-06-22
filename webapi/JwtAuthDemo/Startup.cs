@@ -101,6 +101,7 @@ namespace JwtAuthDemo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -120,6 +121,7 @@ namespace JwtAuthDemo
             app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<JwtAuthenticationMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
@@ -136,15 +138,8 @@ namespace JwtAuthDemo
                         await cronJobService.ExecuteAsync();
                     }
                 });
-
-                //var serviceProvider = serviceScope.ServiceProvider;
-                //var cronJobService = serviceProvider.GetService<CronJobService>();
-                //Task.Run(() =>
-                //{
-                //    cronJobService.Execute();
-                //});
-
             }
+            
 
         }
 

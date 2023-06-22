@@ -12,7 +12,7 @@ namespace JwtAuthDemo.Models
         public string Name { get; set; }
         public string TokenString { get; set; }
         public int NumberDateExpired { get; set; }
-
+        public bool IsActive { get; set; } = true;
 
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }

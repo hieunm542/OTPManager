@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using OTPManager.Models;
 
 namespace JwtAuthDemo.Controllers
 {
@@ -48,6 +49,7 @@ namespace JwtAuthDemo.Controllers
             var role = _userService.GetUserRole(request.UserName);
             var claims = new[]
             {
+                new Claim(ClaimTypes.System, TokenTypes.SystemToken.ToString()),
                 new Claim(ClaimTypes.Name,request.UserName),
                 new Claim(ClaimTypes.Role, role)
             };

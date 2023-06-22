@@ -4,4 +4,5 @@ export interface Token {
     userID: string;
     numberDateExpired: string;
     name: string;
+    isActive: boolean;
   }

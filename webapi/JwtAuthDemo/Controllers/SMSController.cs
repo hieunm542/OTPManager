@@ -108,12 +108,11 @@ namespace JwtAuthDemo.Controllers
             {
                 joinResult = joinResult.Where(sms => sms.PhoneNumber == smsRequest.phoneNumber).ToArray();
             }
-            joinResult = joinResult.Skip(smsRequest.pageIndex * smsRequest.pageSize).Take(smsRequest.pageSize);
             SMSResponse smsResponse = new SMSResponse()
             {
                 total = joinResult.Count(),
-                items = joinResult.ToArray()
-            };
+                items = joinResult.Skip(smsRequest.pageIndex * smsRequest.pageSize).Take(smsRequest.pageSize).ToArray()
+        };
 
             return smsResponse;
         }

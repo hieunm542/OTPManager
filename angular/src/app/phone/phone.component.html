@@ -39,29 +39,6 @@
   </h3>
   <div class="card-body">
 
-    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneView">Add Phone</button>
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Token</th>
-        <th scope="col">Number Date Expired</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of phoneData, ;let i = index ">
-    
-        <th >{{i+1}}</th>
-        <td>{{ item.ip }}</td>
-        <td class="limit">{{item.phoneNumber}}</td>
-        <td>{{item.account}}</td>
-        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneView">View</button><button type="button" class="btn btn-danger" (click)="deletePhone(item.id)">Delete</button></td>
-      </tr>
-    </tbody>
-  </table> -->
-
 
     <div>
 
@@ -93,7 +70,10 @@
           <ng-container matColumnDef="status">
             <!-- Column definition -->
             <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let phone">{{ phone.connectStatus }}</td>
+            <td mat-cell *matCellDef="let phone">
+              <span class="badge bg-success" *ngIf="phone.connectStatus">Connect</span>
+              <span class="badge bg-danger" *ngIf="!phone.connectStatus">Disconnect</span>
+            </td>
           </ng-container>
           <ng-container matColumnDef="button">
             <!-- Column definition -->

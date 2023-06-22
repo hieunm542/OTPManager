@@ -5,6 +5,7 @@ using JwtAuthDemo.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OTPManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,7 @@ namespace JwtAuthDemo.Controllers
             var role = _userService.GetUserRole(userName);
             var claims = new[]
             {
+                new Claim(ClaimTypes.System, TokenTypes.CustomToken.ToString()),
                 new Claim(ClaimTypes.Name,userName),
                 new Claim(ClaimTypes.Role, role)
             };
@@ -63,6 +65,15 @@ namespace JwtAuthDemo.Controllers
             tokenResponse.items = _dbContext.Tokens.Where(t => t.UserID == userID).Skip(pageIndex * pageSize).Take(pageSize).ToArray();
             return tokenResponse;
         }
-
+        [HttpPut("deactiveToken")]
+        [Authorize]
+        public Token deactiveToken(string id)
+        {
+            var token = _dbContext.Tokens.Find(Guid.Parse(id));
+            token.IsActive = false;
+            _dbContext.Tokens.Update(token);
+            _dbContext.SaveChanges();
+            return token;
+        }
     }
 }
