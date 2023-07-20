@@ -20,4 +20,6 @@ RUN dotnet publish -c Release -o /out --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:$VERSION AS runtime
 WORKDIR /app
 COPY --from=build /out ./
-ENTRYPOINT ["dotnet", "JwtAuthDemo.dll"]
+ENTRYPOINT ["dotnet", "OTPManager.dll"]
+RUN apk add --no-cache icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
